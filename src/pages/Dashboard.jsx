@@ -1,6 +1,15 @@
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useTaskContext } from "../context/TaskContext";
 const Dashboard = () => {
+  const { data, error, loading } = useTaskContext();
+  console.log(data);
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   return (
     <section className="container-fluid p-0">
       <div className="row g-0 min-vh-100">
@@ -22,7 +31,7 @@ const Dashboard = () => {
                 </button>
                 <div className="dropdown">
                   <i
-                    class="fs-3 bi bi-person text-success  dropdown-toggle"
+                    className="fs-3 bi bi-person text-secondary  dropdown-toggle"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   ></i>
@@ -32,9 +41,12 @@ const Dashboard = () => {
                       <Link className="dropdown-item">Profile</Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item">
+                      <button
+                        onClick={logout}
+                        className="dropdown-item text-danger"
+                      >
                         Logout<i class="ms-2 bi bi-box-arrow-right"></i>
-                      </Link>
+                      </button>
                     </li>
                   </ul>
                 </div>
@@ -91,7 +103,7 @@ const Dashboard = () => {
                         />
                         <br />
                         <label htmlFor="" className="form-label">
-                          Project Description
+                          Description
                         </label>
                         <input
                           className="form-control"

@@ -8,7 +8,7 @@ const Sidebar = () => {
     setChangeColor(true);
   };
 
-  console.log(changeColor);
+  // console.log(changeColor);
   return (
     <>
       <aside className="col-12 col-md-2 bg-light d-flex flex-column p-3">

@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 
 const useFetch = (url) => {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       const token = localStorage.getItem("token");
       const headers = {
@@ -20,11 +22,12 @@ const useFetch = (url) => {
         throw new Error("Failed to fetch Data.");
       }
       const result = await response.json();
+      setLoading(false);
       setData(result);
     };
     fetchData().catch((err) => setError(err.messaage));
   }, [url]);
-  return { data, error };
+  return { data, error, loading };
 };
 
 export default useFetch;

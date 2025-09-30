@@ -12,31 +12,34 @@ import ProtectedRoutes from "./pages/ProtectedRoutes";
 import Setting from "./pages/Setting";
 import ProjectManagement from "./pages/ProjectManagement";
 import TeamManagement from "./pages/TeamManagement";
+import { TaskProvider } from "./context/TaskContext";
 
 function App() {
   return (
     <>
-      <Router>
-        <Routes>
-          // public routes
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          // protected routes
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Route>
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/settings" element={<Setting />} />
-          </Route>
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/projects" element={<ProjectManagement />} />
-          </Route>
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/teams" element={<TeamManagement />} />
-          </Route>
-        </Routes>
-      </Router>
+      <TaskProvider>
+        <Router>
+          <Routes>
+            // public routes
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            // protected routes
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+            </Route>
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/settings" element={<Setting />} />
+            </Route>
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/projects" element={<ProjectManagement />} />
+            </Route>
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/teams" element={<TeamManagement />} />
+            </Route>
+          </Routes>
+        </Router>
+      </TaskProvider>
     </>
   );
 }

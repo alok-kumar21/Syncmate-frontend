@@ -69,7 +69,7 @@ const Login = () => {
             type="Password"
             required
             className="form-control"
-            placeholder="Name"
+            placeholder="Password"
           />
           <br />
           <div className="d-grid gap-2">
