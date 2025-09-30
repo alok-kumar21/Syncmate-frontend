@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useTaskContext } from "../context/TaskContext";
 const Dashboard = () => {
-  const { data, error, loading } = useTaskContext();
-  console.log(data);
+  const { taskData, projectData } = useTaskContext();
+  console.log(taskData);
+  console.log(projectData);
   const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("token");
@@ -132,22 +133,16 @@ const Dashboard = () => {
 
             {/* projects */}
             <div className="row">
-              <div className="col-12 col-md-4">
-                <div className="card bg-light shadow border-0 ">
-                  <div className="card-body">
-                    <span className="badge text-bg-primary badge-sm ">
-                      Primary
-                    </span>
-                    <h4 className="p-2">Project name</h4>
-                    <p className="text-secondary">
-                      description: Lorem ipsum dolor sit, amet consectetur
-                      adipisicing elit. Adipisci provident ducimus nihil
-                      voluptates consequatur cum rem autem fugiat veritatis
-                      unde.
-                    </p>
+              {projectData?.map((project) => (
+                <div key={project._id} className="col-12 col-md-4 mt-4">
+                  <div className="card bg-light shadow border-0 ">
+                    <div className="card-body">
+                      <h4 className="p-2">{project.name}</h4>
+                      <p className="text-secondary">{project.description}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </section>
 
@@ -158,6 +153,10 @@ const Dashboard = () => {
               <form className="d-inline ms-4">
                 <select className="form-select shadow border-0" name="" id="">
                   <option value="">Filter Tasks</option>
+                  <option value="To Do">To Do</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Blocked">Blocked</option>
                 </select>
               </form>
               {/* Modal button*/}
@@ -257,22 +256,36 @@ const Dashboard = () => {
 
             {/* Tasks */}
             <div className="row">
-              <div className="col-12 col-md-4">
-                <div className="card bg-light shadow border-0">
-                  <div className="card-body">
-                    <span className="badge text-bg-warning badge-sm">
-                      In Progress
-                    </span>
-                    <h4 className="p-2">Task name</h4>
-                    <p className="text-secondary">
-                      description: Lorem ipsum dolor sit, amet consectetur
-                      adipisicing elit. Adipisci provident ducimus nihil
-                      voluptates consequatur cum rem autem fugiat veritatis
-                      unde.
-                    </p>
+              {taskData?.map((task) => (
+                <div key={task._id} className="col-12 col-md-4">
+                  <div className="card bg-light shadow border-0">
+                    <div className="card-body">
+                      {task.status === "To Do" ? (
+                        <span className="badge text-bg-primary badge-sm">
+                          {task.status}
+                        </span>
+                      ) : task.status === "In Progress" ? (
+                        <span className="badge text-bg-warning badge-sm">
+                          {task.status}
+                        </span>
+                      ) : task.status === "Completed" ? (
+                        <span className="badge text-bg-success badge-sm">
+                          {task.status}
+                        </span>
+                      ) : (
+                        <span className="badge text-bg-danger badge-sm">
+                          {task.status}
+                        </span>
+                      )}
+                      <h4 className="p-2">{task.name}</h4>
+                      <p className="text-secondary">
+                        <i class="me-2 bi bi-person-circle"></i>
+                        {task.owners?.map((user) => user.name)}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </section>
         </main>
