@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTaskContext } from "../context/TaskContext";
 const Dashboard = () => {
   const { taskData, projectData } = useTaskContext();
-  console.log(taskData);
-  console.log(projectData);
+ 
   const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("token");

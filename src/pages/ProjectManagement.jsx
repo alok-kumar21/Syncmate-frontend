@@ -1,6 +1,15 @@
 import Sidebar from "./Sidebar";
-
+import { useParams } from "react-router-dom";
+import { useTaskContext } from "../context/TaskContext";
 const ProjectManagement = () => {
+  const { taskData, projectData } = useTaskContext();
+  const { projectId } = useParams();
+
+  const proejctDetails = taskData?.find(
+    (project) => project.project._id == projectId
+  );
+
+  console.log(proejctDetails);
   return (
     <>
       <section className="container-fluid p-0">
@@ -9,11 +18,9 @@ const ProjectManagement = () => {
           <section className="col-12 col-md-10 p-4">
             <section>
               <div className="mt-4">
-                <h2>Project name</h2>
+                <h2>{proejctDetails?.project.name}</h2>
                 <p className="text-muted">
-                  Project description: Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Quam est, assumenda alias optio maiores
-                  soluta corrupti odio dolorum ab recusandae!
+                  {proejctDetails?.project.description}
                 </p>
               </div>
               {/* filter */}
@@ -139,7 +146,7 @@ const ProjectManagement = () => {
             </section>
             {/* task list */}
             <section className="mt-5">
-              <table class="table table-bordered">
+              <table className="table table-bordered">
                 <thead>
                   <tr>
                     <th
@@ -186,7 +193,7 @@ const ProjectManagement = () => {
                     <td>Otto</td>
                     <td>@mdo</td>
                     <td>
-                      <span class="badge bg-primary badge-sm">To Do</span>
+                      <span className="badge bg-primary badge-sm">To Do</span>
                     </td>
                   </tr>
                   <tr>
@@ -196,7 +203,9 @@ const ProjectManagement = () => {
                     <td>@fat</td>
                     <td>
                       {" "}
-                      <span class="badge bg-success badge-sm">Completed</span>
+                      <span className="badge bg-success badge-sm">
+                        Completed
+                      </span>
                     </td>
                   </tr>
                   <tr>
@@ -206,7 +215,9 @@ const ProjectManagement = () => {
                     <td>@social</td>
                     <td>
                       {" "}
-                      <span class="badge bg-warning badge-sm">In Progress</span>
+                      <span className="badge bg-warning badge-sm">
+                        In Progress
+                      </span>
                     </td>
                   </tr>
                 </tbody>

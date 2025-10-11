@@ -13,6 +13,7 @@ import Setting from "./pages/Setting";
 import ProjectManagement from "./pages/ProjectManagement";
 import TeamManagement from "./pages/TeamManagement";
 import { TaskProvider } from "./context/TaskContext";
+import Projects from "./pages/Projects";
 
 function App() {
   return (
@@ -32,7 +33,13 @@ function App() {
               <Route path="/settings" element={<Setting />} />
             </Route>
             <Route element={<ProtectedRoutes />}>
-              <Route path="/projects" element={<ProjectManagement />} />
+              <Route path="/projects" element={<Projects />} />
+            </Route>
+            <Route element={<ProtectedRoutes />}>
+              <Route
+                path="/projectsmanagement/:projectId"
+                element={<ProjectManagement />}
+              />
             </Route>
             <Route element={<ProtectedRoutes />}>
               <Route path="/teams" element={<TeamManagement />} />
