@@ -45,7 +45,7 @@ const Dashboard = () => {
                         onClick={logout}
                         className="dropdown-item text-danger"
                       >
-                        Logout<i class="ms-2 bi bi-box-arrow-right"></i>
+                        Logout<i className="ms-2 bi bi-box-arrow-right"></i>
                       </button>
                     </li>
                   </ul>

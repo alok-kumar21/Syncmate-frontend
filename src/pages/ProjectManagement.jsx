@@ -1,232 +1,148 @@
 import Sidebar from "./Sidebar";
 import { useParams } from "react-router-dom";
 import { useTaskContext } from "../context/TaskContext";
+
 const ProjectManagement = () => {
-  const { taskData, projectData } = useTaskContext();
+  const { taskData, deleteTask } = useTaskContext();
   const { projectId } = useParams();
 
-  const proejctDetails = taskData?.find(
-    (project) => project.project._id == projectId
+  // find all tasks belonging to this project
+  const projectTasks = taskData?.filter(
+    (task) => task.project._id === projectId
   );
 
-  console.log(proejctDetails);
-  return (
-    <>
-      <section className="container-fluid p-0">
-        <div className="row g-0 min-vh-100">
-          <Sidebar />
-          <section className="col-12 col-md-10 p-4">
-            <section>
-              <div className="mt-4">
-                <h2>{proejctDetails?.project.name}</h2>
-                <p className="text-muted">
-                  {proejctDetails?.project.description}
-                </p>
-              </div>
-              {/* filter */}
-              <div className=" mt-5">
-                <div className="d-inline gap-1">
-                  <p className="me-3 d-inline-flex">Sort By:</p>
-                  <span className=" btn btn-outline-secondary rounded-pill btn-xs">
-                    priority Low-High
-                  </span>
-                  <span className="ms-3 btn btn-outline-secondary rounded-pill btn-xs">
-                    priority High-Low
-                  </span>
-                  <span className="ms-3 btn btn-outline-secondary rounded-pill btn-xs">
-                    Newest First
-                  </span>
-                  <span className="ms-3 btn btn-outline-secondary rounded-pill btn-xs">
-                    Oldest First
-                  </span>
-                  <div className="d-flex float-end">
-                    <form className="me-3">
-                      <select className=" form-select" name="" id="">
-                        <option value="#">Filter</option>
-                      </select>
-                    </form>
-                    {/* Modal button*/}
-                    <button
-                      className="btn btn-success btn-sm ms-auto"
-                      data-bs-toggle="modal"
-                      data-bs-target="#taskModal"
-                    >
-                      + New Task
-                    </button>
-                    {/* Modal */}
-                    <div
-                      className="modal fade"
-                      id="taskModal"
-                      tabIndex="-1"
-                      aria-labelledby="exampleModalLabel"
-                      aria-hidden="true"
-                    >
-                      <div className="modal-dialog">
-                        <div className="modal-content">
-                          <div className="modal-header">
-                            <h1
-                              className="modal-title fs-5"
-                              id="exampleModalLabel"
-                            >
-                              Create New Task
-                            </h1>
-                            <button
-                              type="button"
-                              className="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
-                          </div>
-                          <div className="modal-body">
-                            <form action="">
-                              <label htmlFor="" className="form-label">
-                                Task Name
-                              </label>
-                              <input
-                                className="form-control"
-                                type="text"
-                                placeholder="Enter Project Name"
-                              />
-                              <br />
-                              <label htmlFor="" className="form-label">
-                                Select Project
-                              </label>
-                              <select name="" className="form-control" id="">
-                                <option value="#">Select Project</option>
-                              </select>
-                              <br />
-                              <label htmlFor="" className="form-label">
-                                Select Team
-                              </label>
-                              <select name="" className="form-control" id="">
-                                <option value="#">Select Team</option>
-                              </select>
+  const projectInfo = projectTasks?.[0]?.project; // to show project name/description
 
-                              <br />
-                              <label htmlFor="" className="form-label">
-                                Select Owners
-                              </label>
-                              <select name="" className="form-control" id="">
-                                <option value="#">Select Owners</option>
-                              </select>
-                              <br />
-                              <label htmlFor="" className="form-label">
-                                Select Tags
-                              </label>
-                              <select name="" className="form-control" id="">
-                                <option value="#">Select Tags</option>
-                              </select>
-                              <br />
-                              <label htmlFor="" className="form-label">
-                                Select Status
-                              </label>
-                              <select name="" className="form-control" id="">
-                                <option value="#">Select Status</option>
-                              </select>
-                            </form>
-                          </div>
-                          <div className="modal-footer">
-                            <button
-                              type="button"
-                              className="btn btn-secondary"
-                              data-bs-dismiss="modal"
-                            >
-                              Cancle
-                            </button>
-                            <button type="button" className="btn btn-success">
-                              Create
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+  return (
+    <section className="container-fluid p-0">
+      <div className="row g-0 min-vh-100">
+        <Sidebar />
+        <section className="col-12 col-md-10 p-4">
+          {/* Project Header */}
+          <div className="mt-4">
+            <h2>{projectInfo?.name}</h2>
+            <p className="text-muted">{projectInfo?.description}</p>
+          </div>
+
+          {/* Filter Bar */}
+          <div className="mt-5">
+            <div className="d-inline gap-1">
+              <p className="me-3 d-inline-flex">Sort By:</p>
+              <span className="btn btn-outline-secondary rounded-pill btn-xs">
+                Priority Low-High
+              </span>
+              <span className="ms-3 btn btn-outline-secondary rounded-pill btn-xs">
+                Priority High-Low
+              </span>
+              <span className="ms-3 btn btn-outline-secondary rounded-pill btn-xs">
+                Newest First
+              </span>
+              <span className="ms-3 btn btn-outline-secondary rounded-pill btn-xs">
+                Oldest First
+              </span>
+
+              {/* Right side actions */}
+              <div className="d-flex float-end">
+                <form className="me-3">
+                  <select className="form-select">
+                    <option value="#">Filter</option>
+                  </select>
+                </form>
+
+                {/* Add Task Modal Button */}
+                <button
+                  className="btn btn-success btn-sm ms-auto"
+                  data-bs-toggle="modal"
+                  data-bs-target="#taskModal"
+                >
+                  + New Task
+                </button>
               </div>
-            </section>
-            {/* task list */}
-            <section className="mt-5">
-              <table className="table table-bordered">
-                <thead>
+            </div>
+          </div>
+
+          {/* Task List */}
+          <section className="mt-5">
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th className="text-secondary bg-info-subtle" scope="col">
+                    TASKS
+                  </th>
+                  <th className="text-secondary bg-info-subtle" scope="col">
+                    OWNER
+                  </th>
+                  <th className="text-secondary bg-info-subtle" scope="col">
+                    TAGS
+                  </th>
+                  <th className="text-secondary bg-info-subtle" scope="col">
+                    TEAM
+                  </th>
+                  <th className="text-secondary bg-info-subtle" scope="col">
+                    STATUS
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {projectTasks?.length > 0 ? (
+                  projectTasks.map((task) => (
+                    <tr key={task._id}>
+                      <td>{task.name}</td>
+                      <td>
+                        {task.owners?.map((owner) => (
+                          <span key={owner._id}>{owner.name} ,</span>
+                        ))}
+                      </td>
+                      <td>{task.tags?.join(", ")}</td>
+                      <td>{task.team?.name}</td>
+                      <td>
+                        <span
+                          className={`badge badge-sm ${
+                            task.status === "To Do"
+                              ? "bg-primary"
+                              : task.status === "In Progress"
+                              ? "bg-warning"
+                              : task.status === "Completed"
+                              ? "bg-success"
+                              : "bg-secondary"
+                          }`}
+                        >
+                          {task.status}
+                        </span>
+
+                        {/* Delete Button */}
+                        <span
+                          onClick={() => deleteTask(task._id)}
+                          className="float-end text-danger"
+                          style={{ cursor: "pointer" }}
+                        >
+                          <i className="bi bi-trash-fill"></i>
+                        </span>
+
+                        {/* Edit Button (future use) */}
+                        <span
+                          className="float-end text-primary me-3"
+                          style={{ cursor: "pointer" }}
+                        >
+                          <i className="bi bi-pencil-square"></i>
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
                   <tr>
-                    <th
-                      className="text-secondary"
-                      style={{ backgroundColor: "lightblue" }}
-                      scope="col"
-                    >
-                      TASKS
-                    </th>
-                    <th
-                      className="text-secondary"
-                      style={{ backgroundColor: "lightblue" }}
-                      scope="col"
-                    >
-                      OWNER
-                    </th>
-                    <th
-                      className="text-secondary"
-                      style={{ backgroundColor: "lightblue" }}
-                      scope="col"
-                    >
-                      PRIORITY
-                    </th>
-                    <th
-                      className="text-secondary"
-                      style={{ backgroundColor: "lightblue" }}
-                      scope="col"
-                    >
-                      DUE ON
-                    </th>
-                    <th
-                      className="text-secondary"
-                      style={{ backgroundColor: "lightblue" }}
-                      scope="col"
-                    >
-                      STATUS
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>
-                      <span className="badge bg-primary badge-sm">To Do</span>
+                    <td colSpan="5" className="text-center text-muted">
+                      No tasks found for this project.
                     </td>
                   </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    <td>
-                      {" "}
-                      <span className="badge bg-success badge-sm">
-                        Completed
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>@social</td>
-                    <td>
-                      {" "}
-                      <span className="badge bg-warning badge-sm">
-                        In Progress
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </section>
+                )}
+              </tbody>
+            </table>
           </section>
-        </div>
-      </section>
-    </>
+        </section>
+      </div>
+    </section>
   );
 };
 
