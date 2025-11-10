@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTaskContext } from "../context/TaskContext";
 const CreateTaskForm = () => {
   const { taskData, projectData } = useTaskContext();
-  console.log(taskData);
+
   const [formData, setFormData] = useState({
     name: "",
     project: "",
