@@ -2,9 +2,13 @@ import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useTaskContext } from "../context/TaskContext";
+
+import CreateProjectForm from "./CreateProjectForm";
+import CreateTaskForm from "./CreateTaskForm";
+
 const Dashboard = () => {
   const { taskData, projectData } = useTaskContext();
- 
+
   const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("token");
@@ -62,71 +66,8 @@ const Dashboard = () => {
                   <option value="">Filter Project</option>
                 </select>
               </form>
-              {/* Modal button*/}
-              <button
-                className="btn btn-success btn-sm ms-auto"
-                data-bs-toggle="modal"
-                data-bs-target="#projectModal"
-              >
-                + New Project
-              </button>
-              {/* Modal */}
-              <div
-                className="modal fade"
-                id="projectModal"
-                tabIndex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h1 className="modal-title fs-5" id="exampleModalLabel">
-                        Create New Project
-                      </h1>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div className="modal-body">
-                      <form action="">
-                        <label htmlFor="" className="form-label">
-                          Project Name
-                        </label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          placeholder="Enter Project Name"
-                        />
-                        <br />
-                        <label htmlFor="" className="form-label">
-                          Description
-                        </label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          placeholder="Enter Project Description"
-                        />
-                      </form>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Cancle
-                      </button>
-                      <button type="button" className="btn btn-success">
-                        Create
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* create project button */}
+              <CreateProjectForm />
             </div>
             <br />
 
@@ -158,98 +99,9 @@ const Dashboard = () => {
                   <option value="Blocked">Blocked</option>
                 </select>
               </form>
-              {/* Modal button*/}
-              <button
-                className="btn btn-success btn-sm ms-auto"
-                data-bs-toggle="modal"
-                data-bs-target="#taskModal"
-              >
-                + New Task
-              </button>
-              {/* Modal */}
-              <div
-                className="modal fade"
-                id="taskModal"
-                tabIndex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h1 className="modal-title fs-5" id="exampleModalLabel">
-                        Create New Task
-                      </h1>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div className="modal-body">
-                      <form action="">
-                        <label htmlFor="" className="form-label">
-                          Task Name
-                        </label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          placeholder="Enter Project Name"
-                        />
-                        <br />
-                        <label htmlFor="" className="form-label">
-                          Select Project
-                        </label>
-                        <select name="" className="form-control" id="">
-                          <option value="#">Select Project</option>
-                        </select>
-                        <br />
-                        <label htmlFor="" className="form-label">
-                          Select Team
-                        </label>
-                        <select name="" className="form-control" id="">
-                          <option value="#">Select Team</option>
-                        </select>
 
-                        <br />
-                        <label htmlFor="" className="form-label">
-                          Select Owners
-                        </label>
-                        <select name="" className="form-control" id="">
-                          <option value="#">Select Owners</option>
-                        </select>
-                        <br />
-                        <label htmlFor="" className="form-label">
-                          Select Tags
-                        </label>
-                        <select name="" className="form-control" id="">
-                          <option value="#">Select Tags</option>
-                        </select>
-                        <br />
-                        <label htmlFor="" className="form-label">
-                          Select Status
-                        </label>
-                        <select name="" className="form-control" id="">
-                          <option value="#">Select Status</option>
-                        </select>
-                      </form>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Cancle
-                      </button>
-                      <button type="button" className="btn btn-success">
-                        Create
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* create task button */}
+              <CreateTaskForm />
             </div>
             <br />
 
