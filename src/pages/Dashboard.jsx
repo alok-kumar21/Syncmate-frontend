@@ -10,10 +10,27 @@ const Dashboard = () => {
   const { taskData, projectData } = useTaskContext();
 
   const navigate = useNavigate();
+
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+
+  // -------------------------
+  // RECENT PROJECTS & TASKS
+  // -------------------------
+  const recentProjects = projectData
+    ? [...projectData]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 3)
+    : [];
+
+  const recentTasks = taskData
+    ? [...taskData]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 4)
+    : [];
+
   return (
     <section className="container-fluid p-0">
       <div className="row g-0 min-vh-100">
@@ -35,7 +52,7 @@ const Dashboard = () => {
                 </button>
                 <div className="dropdown">
                   <i
-                    className="fs-3 bi bi-person text-secondary  dropdown-toggle"
+                    className="fs-3 bi bi-person text-secondary dropdown-toggle"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   ></i>
@@ -57,25 +74,27 @@ const Dashboard = () => {
               </form>
             </div>
           </nav>
-          {/* Project filter */}
+
+          {/* ------------------ Projects Section ------------------ */}
           <section>
             <div className="mt-5 d-flex">
-              <h3 className="d-inline">Projects</h3>
+              <h3 className="d-inline">Recent Projects</h3>
               <form className="d-inline ms-4">
-                <select className="form-select  shadow border-0" name="" id="">
+                <select className="form-select shadow border-0">
                   <option value="">Filter Project</option>
                 </select>
               </form>
-              {/* create project button */}
+
               <CreateProjectForm />
             </div>
+
             <br />
 
-            {/* projects */}
+            {/* Recent Projects */}
             <div className="row">
-              {projectData?.map((project) => (
+              {recentProjects.map((project) => (
                 <div key={project._id} className="col-12 col-md-4 mt-4">
-                  <div className="card bg-light shadow border-0 ">
+                  <div className="card bg-light shadow border-0">
                     <div className="card-body">
                       <h4 className="p-2">{project.name}</h4>
                       <p className="text-secondary">{project.description}</p>
@@ -83,15 +102,19 @@ const Dashboard = () => {
                   </div>
                 </div>
               ))}
+
+              {recentProjects.length === 0 && (
+                <p className="text-secondary mt-3">No recent projects found.</p>
+              )}
             </div>
           </section>
 
-          {/* Task filter */}
+          {/* ------------------ Tasks Section ------------------ */}
           <section>
             <div className="mt-5 d-flex">
-              <h3 className="d-inline">Tasks</h3>
+              <h3 className="d-inline">Recent Tasks</h3>
               <form className="d-inline ms-4">
-                <select className="form-select shadow border-0" name="" id="">
+                <select className="form-select shadow border-0">
                   <option value="">Filter Tasks</option>
                   <option value="To Do">To Do</option>
                   <option value="In Progress">In Progress</option>
@@ -100,43 +123,45 @@ const Dashboard = () => {
                 </select>
               </form>
 
-              {/* create task button */}
               <CreateTaskForm />
             </div>
+
             <br />
 
-            {/* Tasks */}
+            {/* Recent Tasks */}
             <div className="row">
-              {taskData?.map((task) => (
-                <div key={task._id} className="col-12 col-md-4">
+              {recentTasks.map((task) => (
+                <div key={task._id} className="col-12 col-md-4 mt-4">
                   <div className="card bg-light shadow border-0">
                     <div className="card-body">
-                      {task.status === "To Do" ? (
-                        <span className="badge text-bg-primary badge-sm">
-                          {task.status}
-                        </span>
-                      ) : task.status === "In Progress" ? (
-                        <span className="badge text-bg-warning badge-sm">
-                          {task.status}
-                        </span>
-                      ) : task.status === "Completed" ? (
-                        <span className="badge text-bg-success badge-sm">
-                          {task.status}
-                        </span>
-                      ) : (
-                        <span className="badge text-bg-danger badge-sm">
-                          {task.status}
-                        </span>
-                      )}
+                      <span
+                        className={`badge badge-sm ${
+                          task.status === "To Do"
+                            ? "text-bg-primary"
+                            : task.status === "In Progress"
+                            ? "text-bg-warning"
+                            : task.status === "Completed"
+                            ? "text-bg-success"
+                            : "text-bg-danger"
+                        }`}
+                      >
+                        {task.status}
+                      </span>
+
                       <h4 className="p-2">{task.name}</h4>
+
                       <p className="text-secondary">
-                        <i class="me-2 bi bi-person-circle"></i>
-                        {task.owners?.map((user) => user.name)}
+                        <i className="me-2 bi bi-person-circle"></i>
+                        {task.owners?.map((user) => user.name).join(", ")}
                       </p>
                     </div>
                   </div>
                 </div>
               ))}
+
+              {recentTasks.length === 0 && (
+                <p className="text-secondary mt-3">No recent tasks found.</p>
+              )}
             </div>
           </section>
         </main>
