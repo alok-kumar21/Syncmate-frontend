@@ -1,6 +1,57 @@
+import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
+import useFetch from "./useFetch";
 
 const TeamManagement = () => {
+  const {
+    data: teamData,
+    loading: teamLoading,
+    error: teamError,
+  } = useFetch("http://localhost:4001/api/v1/teams");
+  console.log(teamData);
+
+  const [teamFormData, setTeamsFormData] = useState({
+    name: "",
+    description: "",
+  });
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    setTeamsFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const formHandle = (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem("token");
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const response = fetch("http://localhost:4001/api/v1/teams", {
+        method: "POST",
+        headers,
+        body: JSON.stringify(teamFormData),
+      });
+
+      if (!response.ok) {
+        throw new Error("failed to add new team.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    setTeamsFormData({
+      name: "",
+      description: "",
+    });
+  };
+
+  useEffect(() => {}, [teamData]);
   return (
     <section className="container-fluid p-0">
       <div className="row g-0 min-vh-100">
@@ -38,11 +89,14 @@ const TeamManagement = () => {
                       ></button>
                     </div>
                     <div className="modal-body">
-                      <form action="">
+                      <form onSubmit={formHandle}>
                         <label htmlFor="" className="form-label">
                           Team Name
                         </label>
                         <input
+                          onChange={handleChange}
+                          value={teamFormData.name}
+                          name="name"
                           className="form-control"
                           type="text"
                           placeholder="Enter Project Name"
@@ -52,40 +106,59 @@ const TeamManagement = () => {
                           Description
                         </label>
                         <textarea
+                          onChange={handleChange}
+                          value={teamFormData.description}
+                          name="description"
                           className="form-control"
-                          name=""
-                          id=""
                           style={{ height: "100px" }}
                         ></textarea>
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Cancle
+                          </button>
+                          <button type="submit" className="btn btn-success">
+                            Create
+                          </button>
+                        </div>
                       </form>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Cancle
-                      </button>
-                      <button type="button" className="btn btn-success">
-                        Create
-                      </button>
                     </div>
                   </div>
                 </div>
               </div>
               <h2>Teams</h2>
             </div>
+            {teamLoading && (
+              <div className="card w-25" aria-hidden="true">
+                <div className="card-body">
+                  <h5 className="card-title placeholder-glow">
+                    <span className="placeholder col-6"></span>
+                  </h5>
+                  <p className="card-text placeholder-glow">
+                    <span className="placeholder col-7"></span>
+                    <span className="placeholder col-4"></span>
+                  </p>
+                </div>
+              </div>
+            )}
             <div className="mt-5">
               <div className="row">
-                <div className="col-12 col-md-3">
-                  <div className="card shadow border-0 bg-light">
-                    <div className="card-body">
-                      <h5>Team name</h5>
-                      <p>users images</p>
+                {teamData?.map((team) => (
+                  <div className="col-12 col-md-3">
+                    <div
+                      key={team._id}
+                      className="card shadow border-0 bg-light"
+                    >
+                      <div className="card-body">
+                        <h5>{team.name}</h5>
+                        <p>{team.description}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
