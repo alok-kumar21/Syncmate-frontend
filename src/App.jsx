@@ -14,6 +14,7 @@ import ProjectManagement from "./pages/ProjectManagement";
 import TeamManagement from "./pages/TeamManagement";
 import { TaskProvider } from "./context/TaskContext";
 import Projects from "./pages/Projects";
+import TeamDetails from "./pages/TeamDetails";
 
 function App() {
   return (
@@ -40,6 +41,9 @@ function App() {
                 path="/projectsmanagement/:projectId"
                 element={<ProjectManagement />}
               />
+            </Route>
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/teamdetails" element={<TeamDetails />} />
             </Route>
             <Route element={<ProtectedRoutes />}>
               <Route path="/teams" element={<TeamManagement />} />

@@ -79,11 +79,11 @@ const Dashboard = () => {
           <section>
             <div className="mt-5 d-flex">
               <h3 className="d-inline">Recent Projects</h3>
-              <form className="d-inline ms-4">
+              {/* <form className="d-inline ms-4">
                 <select className="form-select shadow border-0">
                   <option value="">Filter Project</option>
                 </select>
-              </form>
+              </form> */}
 
               <CreateProjectForm />
             </div>
@@ -113,7 +113,7 @@ const Dashboard = () => {
           <section>
             <div className="mt-5 d-flex">
               <h3 className="d-inline">Recent Tasks</h3>
-              <form className="d-inline ms-4">
+              {/* <form className="d-inline ms-4">
                 <select className="form-select shadow border-0">
                   <option value="">Filter Tasks</option>
                   <option value="To Do">To Do</option>
@@ -121,7 +121,7 @@ const Dashboard = () => {
                   <option value="Completed">Completed</option>
                   <option value="Blocked">Blocked</option>
                 </select>
-              </form>
+              </form> */}
 
               <CreateTaskForm />
             </div>

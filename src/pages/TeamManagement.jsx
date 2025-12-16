@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import useFetch from "./useFetch";
+import { Link } from "react-router-dom";
 
 const TeamManagement = () => {
   const {
@@ -147,7 +148,10 @@ const TeamManagement = () => {
             <div className="mt-5">
               <div className="row">
                 {teamData?.map((team) => (
-                  <div className="col-12 col-md-3">
+                  <Link
+                    to="/teamdetails"
+                    className="text-decoration-none col-12 col-md-3"
+                  >
                     <div
                       key={team._id}
                       className="card shadow border-0 bg-light"
@@ -157,7 +161,7 @@ const TeamManagement = () => {
                         <p>{team.description}</p>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
