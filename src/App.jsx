@@ -43,7 +43,7 @@ function App() {
               />
             </Route>
             <Route element={<ProtectedRoutes />}>
-              <Route path="/teamdetails" element={<TeamDetails />} />
+              <Route path="/teamdetails/:teamId" element={<TeamDetails />} />
             </Route>
             <Route element={<ProtectedRoutes />}>
               <Route path="/teams" element={<TeamManagement />} />

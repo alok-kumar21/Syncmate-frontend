@@ -9,7 +9,7 @@ const TeamManagement = () => {
     loading: teamLoading,
     error: teamError,
   } = useFetch("http://localhost:4001/api/v1/teams");
-  console.log(teamData);
+  
 
   const [teamFormData, setTeamsFormData] = useState({
     name: "",
@@ -149,7 +149,7 @@ const TeamManagement = () => {
               <div className="row">
                 {teamData?.map((team) => (
                   <Link
-                    to="/teamdetails"
+                    to={`/teamdetails/${team._id}`}
                     className="text-decoration-none col-12 col-md-3"
                   >
                     <div

@@ -1,6 +1,29 @@
 import Sidebar from "./Sidebar";
+import { useParams } from "react-router-dom";
+import useFetch from "./useFetch";
+import { useEffect, useState } from "react";
 
 const TeamDetails = () => {
+  const { teamId } = useParams();
+
+  const [newTeamData, setNewTeamData] = useState(null);
+
+  const {
+    data: teamData,
+    loading: teamLoading,
+    error: teamError,
+  } = useFetch("http://localhost:4001/api/v1/teams");
+
+  useEffect(() => {
+    if (teamData && teamId) {
+      const team = teamData.find((t) => t._id === teamId);
+      setNewTeamData(team);
+    }
+  }, [teamData, teamId]);
+
+  if (teamLoading) return <p className="p-4">Loading...</p>;
+  if (teamError) return <p className="p-4 text-danger">Error loading team</p>;
+
   return (
     <section className="container-fluid p-0">
       <div className="row g-0 min-vh-100">
@@ -11,7 +34,7 @@ const TeamDetails = () => {
           {/* Header */}
           <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4">
             <div>
-              <h2 className="mb-1">Design Team</h2>
+              <h2 className="mb-1">{newTeamData?.name}</h2>
               <p className="text-secondary mb-0">MEMBERS</p>
             </div>
 
@@ -27,10 +50,17 @@ const TeamDetails = () => {
           {/* Members List */}
           <div className="card shadow-sm">
             <ul className="list-group list-group-flush">
-              <li className="list-group-item">Member 1</li>
-              <li className="list-group-item">Member 2</li>
-              <li className="list-group-item">Member 3</li>
-              <li className="list-group-item">Member 4</li>
+              {newTeamData?.members?.length > 0 ? (
+                newTeamData.members.map((member) => (
+                  <li key={member._id} className="list-group-item">
+                    {member.name}
+                  </li>
+                ))
+              ) : (
+                <li className="list-group-item text-muted text-center">
+                  No members found
+                </li>
+              )}
             </ul>
           </div>
 
@@ -53,16 +83,14 @@ const TeamDetails = () => {
                 </div>
 
                 <div className="modal-body">
-                  <form>
-                    <div className="mb-3">
-                      <label className="form-label">Member Name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter member name"
-                      />
-                    </div>
-                  </form>
+                  <div className="mb-3">
+                    <label className="form-label">Member Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Enter member name"
+                    />
+                  </div>
                 </div>
 
                 <div className="modal-footer">
